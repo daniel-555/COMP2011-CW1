@@ -1,5 +1,7 @@
 {% macro newCard(cardData) -%}
-<div class="card">
+<div
+	class="card {% if cardData.completed %}border-secondary{% else %}border-primary{% endif %}"
+>
 	<div class="card-body">
 		<h5 class="card-title">{{ cardData.module }}</h5>
 		<h6 class="card-subtitle mb-2 text-muted">{{ cardData.title }}</h6>
