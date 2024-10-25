@@ -1,0 +1,27 @@
+{% macro newCard(title, module, description, dueDate, dueTime, completed=False)
+-%}
+<div class="card">
+	<div class="card-body">
+		<h5 class="card-title">{{ module }}</h5>
+		<h6 class="card-subtitle mb-2 text-muted">{{ title }}</h6>
+		<p class="card-text">{{ description }}</p>
+
+		{% if completed %}
+		<button type="button" class="btn btn-outline-secondary btn-block">
+			Mark as incomplete
+		</button>
+		{% else %}
+		<button type="button" class="btn btn-outline-primary btn-block">
+			Mark complete
+		</button>
+		{% endif %}
+		<div class="btn-group btn-block mt-2" role="group">
+			<button type="button" class="btn btn-outline-warning">Edit</button>
+
+			<button type="button" class="btn btn-outline-danger">Delete</button>
+		</div>
+	</div>
+
+	<div class="card-footer text-muted">Due {{dueDate}} at {{dueTime}}</div>
+</div>
+{%- endmacro %}
