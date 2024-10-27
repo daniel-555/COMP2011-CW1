@@ -119,9 +119,17 @@ def editAssessment(assessmentId=None):
                            form=form
                            )
 
-@app.route("/mark-as-complete", methods=['GET', 'POST'])
-@app.route("/mark-as-complete/<int:assessmentId>", methods=['GET', 'POST'])
+@app.route("/toggle-completed", methods=['GET', 'POST'])
+@app.route("/toggle-completed/<int:assessmentId>", methods=['GET', 'POST'])
 def markAsComplete(assessmentId=None):
     if assessmentId == None:
         return redirect("/")
     
+    assessment = db.session.execute(db.select(Assessment).filter_by(id=assessmentId)).scalar()
+
+    assessment.completed = not assessment.completed
+    db.session.commit()
+
+    return redirect("/")
+
+

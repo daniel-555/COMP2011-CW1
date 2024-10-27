@@ -7,17 +7,24 @@
     <h6 class="card-subtitle mb-2 text-muted">{{ cardData.title }}</h6>
     <p class="card-text">{{ cardData.description }}</p>
 
-    {% if cardData.completed %}
-    <button type="button" class="btn btn-outline-secondary btn-block">
-      Mark as incomplete
-    </button>
-    {% else %}
-    <button type="button" class="btn btn-outline-primary btn-block">
-      Mark as complete
-    </button>
-    {% endif %}
+    <a href="/toggle-completed/{{ cardData.id }}" class="text-decoration-none">
+      {% if cardData.completed %}
+      <button type="button" class="btn btn-outline-secondary btn-block">
+        Mark as incomplete
+      </button>
+      {% else %}
+      <button type="button" class="btn btn-outline-primary btn-block">
+        Mark as complete
+      </button>
+      {% endif %}
+    </a>
     <div class="btn-group btn-block mt-2" role="group">
-      <a type="button" class="btn btn-outline-warning" href="/edit/{{ cardData.id }}">Edit</a>
+      <a
+        type="button"
+        class="btn btn-outline-warning"
+        href="/edit/{{ cardData.id }}"
+        >Edit</a
+      >
 
       <button type="button" class="btn btn-outline-danger">Delete</button>
     </div>
