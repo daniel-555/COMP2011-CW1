@@ -2,11 +2,12 @@
 %}
 <div class="container-fluid">
 
-	
-		<div class="card-deck">
-			{% for assessment in assessments %} {{ newCard(assessment) }} {% endfor
-			%}
+	<div class="row">
+		{% for assessment in assessments %}
+		<div class="col col-12 col-sm-6 col-lg-4 col-xl-3 mb-4">
+			{{ newCard(assessment) }}
 		</div>
+		{% endfor %}
 	</div>
 </div>
 

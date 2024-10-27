@@ -1,30 +1,30 @@
 {% macro newCard(cardData) -%}
 <div
-	class="card {% if cardData.completed %}border-secondary{% else %}border-primary{% endif %}"
+  class="card {% if cardData.completed %}border-secondary{% else %}border-primary{% endif %}"
 >
-	<div class="card-body">
-		<h5 class="card-title">{{ cardData.module }}</h5>
-		<h6 class="card-subtitle mb-2 text-muted">{{ cardData.title }}</h6>
-		<p class="card-text">{{ cardData.description }}</p>
+  <div class="card-body">
+    <h5 class="card-title">{{ cardData.module }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ cardData.title }}</h6>
+    <p class="card-text">{{ cardData.description }}</p>
 
-		{% if cardData.completed %}
-		<button type="button" class="btn btn-outline-secondary btn-block">
-			Mark as incomplete
-		</button>
-		{% else %}
-		<button type="button" class="btn btn-outline-primary btn-block">
-			Mark complete
-		</button>
-		{% endif %}
-		<div class="btn-group btn-block mt-2" role="group">
-			<button type="button" class="btn btn-outline-warning">Edit</button>
+    {% if cardData.completed %}
+    <button type="button" class="btn btn-outline-secondary btn-block">
+      Mark as incomplete
+    </button>
+    {% else %}
+    <button type="button" class="btn btn-outline-primary btn-block">
+      Mark complete
+    </button>
+    {% endif %}
+    <div class="btn-group btn-block mt-2" role="group">
+      <button type="button" class="btn btn-outline-warning">Edit</button>
 
-			<button type="button" class="btn btn-outline-danger">Delete</button>
-		</div>
-	</div>
+      <button type="button" class="btn btn-outline-danger">Delete</button>
+    </div>
+  </div>
 
-	<div class="card-footer text-muted">
-		Due {{ cardData.dueDate}} at {{ cardData.dueTime }}
-	</div>
+  <div class="card-footer text-muted">
+    Due {{ cardData.dueDate}} at {{ cardData.dueTime }}
+  </div>
 </div>
 {%- endmacro %}

@@ -33,6 +33,14 @@ def home():
             "dueDate":"25/10/24", 
             "dueTime":"16:00", 
             "completed": False
+        }, {
+            "id": 4,
+            "title":"Formative Coursework 1", 
+            "module":"COMP2421", 
+            "description":"Made up coursework", 
+            "dueDate":"25/10/24", 
+            "dueTime":"16:00", 
+            "completed": True
         }
     ]
     
