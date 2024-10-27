@@ -6,15 +6,6 @@
 		<div class="col-12 col-md-3 col-xl-4"></div>
 		<div class="col-12 col-md-6 col-xl-4">
 			{% if action=="create" %}
-			{% with messages = get_flashed_messages() %}
-				{% if messages %}
-					{% for message in messages %}
-					<div class="alert alert-success">
-						{{ message }}
-					</div>
-					{% endfor %}
-				{% endif %}
-			{% endwith %}
 			<h2>Create a new Assessment</h2>
 			{% else %}
 			<h2>Edit {{ assessment.module }} {{ assessment.title }}</h2>

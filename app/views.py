@@ -53,18 +53,17 @@ def formatAssessment(assessment):
             "module": assessment.module,
             "description": assessment.description,
             "dueDate": assessment.deadline.strftime("%D/%m/%Y"),
-            "dueTime": assessment.deadline.strftime("%H/%M"),
+            "dueTime": assessment.deadline.strftime("%H:%M"),
             "completed": assessment.completed
-
         }
 
 def getAllAssessments():
-    data = Assessment.query.all()
+    data = db.session.execute(db.select(Assessment).order_by(Assessment.completed)).all()
     
     # format data into the usable format
     formattedAssessments = []
     for assessment in data:
-        formattedAssessments.append(formatAssessment(assessment))
+        formattedAssessments.append(formatAssessment(assessment[0]))
 
     return formattedAssessments
 
@@ -72,7 +71,7 @@ def getAllAssessments():
 @app.route('/', methods=['GET', 'POST'])
 def home():
     assessments = getAllAssessments()
-    
+
     return render_template("home.html", title="Home", assessments=assessments)
 
 @app.route('/create', methods=['GET', 'POST'])
@@ -80,7 +79,21 @@ def createAssessment():
     form = AssessmentForm()
 
     if form.validate_on_submit():
-        flash("success")
+
+        title = form.title.data
+        module = form.module.data
+        description = form.description.data
+        deadline = datetime.datetime.combine(form.dueDate.data, form.dueTime.data)
+        completed = form.completed.data
+
+        flash("Successfully created %s %s" % (module, title))
+
+
+        newAssessment = Assessment(title=title, module=module, description=description, deadline=deadline, completed=completed)
+        db.session.add(newAssessment)
+        db.session.commit()
+
+        return redirect("/")
 
     return render_template("assessmentForm.html", 
                            title="Create Assessment", 
