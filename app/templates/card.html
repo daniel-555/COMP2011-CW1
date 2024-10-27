@@ -17,14 +17,14 @@
     </button>
     {% endif %}
     <div class="btn-group btn-block mt-2" role="group">
-      <button type="button" class="btn btn-outline-warning">Edit</button>
+      <a type="button" class="btn btn-outline-warning" href="/edit">Edit</a>
 
       <button type="button" class="btn btn-outline-danger">Delete</button>
     </div>
   </div>
 
   <div class="card-footer text-muted">
-    Due {{ cardData.dueDate}} at {{ cardData.dueTime }}
+    Due {{ cardData.dueDate }} at {{ cardData.dueTime }}
   </div>
 </div>
 {%- endmacro %}

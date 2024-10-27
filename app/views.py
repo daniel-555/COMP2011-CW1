@@ -51,6 +51,16 @@ def createAssessment():
     form = AssessmentForm()
     return render_template("assessmentForm.html", 
                            title="Create Assessment", 
-                           action="Create",
+                           action="create", # can be (create, edit)
+                           form=form
+                           )
+
+@app.route('/edit', methods=['GET', 'POST'])
+def editAssessment():
+    form = AssessmentForm()
+    return render_template("assessmentForm.html", 
+                           title="Create Assessment", 
+                           action="edit", # can be (create, edit)
+                           id='COMP2011 Coursework 1',
                            form=form
                            )
