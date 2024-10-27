@@ -1,5 +1,6 @@
 from flask import render_template
 from app import app
+from .forms import AssessmentForm
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -35,4 +36,13 @@ def home():
         }
     ]
     
-    return render_template("home.html", assessments=assessments)
+    return render_template("home.html", title="Home", assessments=assessments)
+
+@app.route('/create', methods=['GET', 'POST'])
+def createAssessment():
+    form = AssessmentForm()
+    return render_template("assessmentForm.html", 
+                           title="Create Assessment", 
+                           action="Create",
+                           form=form
+                           )
