@@ -56,6 +56,8 @@ def home():
 
     return render_template("home.html", title="Home", assessments=assessments)
 
+
+
 @app.route('/completed', methods=['GET', 'POST'])
 def completed():
     data = db.session.execute(db.select(Assessment).filter_by(completed=True)).all()
@@ -69,6 +71,8 @@ def completed():
 
     return render_template("home.html", title="Completed Assessments", assessments=assessments)
 
+
+
 @app.route('/current', methods=['GET', 'POST'])
 def current():
     data = db.session.execute(db.select(Assessment).filter_by(completed=False)).all()
@@ -81,6 +85,8 @@ def current():
         flash("No current assessments to display")
 
     return render_template("home.html", title="Current Assessments", assessments=assessments)
+
+
 
 @app.route('/create', methods=['GET', 'POST'])
 def createAssessment():
@@ -110,6 +116,7 @@ def createAssessment():
                            )
 
 
+
 @app.route('/edit', methods=['GET', 'POST'])
 @app.route('/edit/<int:assessmentId>', methods=['GET', 'POST'])
 def editAssessment(assessmentId=None):
@@ -126,6 +133,7 @@ def editAssessment(assessmentId=None):
                            form=form
                            )
 
+
 @app.route("/toggle-completed", methods=['GET', 'POST'])
 @app.route("/toggle-completed/<int:assessmentId>", methods=['GET', 'POST'])
 def markAsComplete(assessmentId=None):
@@ -140,3 +148,17 @@ def markAsComplete(assessmentId=None):
     return redirect("/")
 
 
+@app.route("/delete", methods=['GET', 'POST'])
+@app.route("/delete/<int:assessmentId>", methods=['GET', 'POST'])
+def delete(assessmentId=None):
+    if assessmentId == None:
+        return redirect("/")
+    
+    assessment = db.session.execute(db.select(Assessment).filter_by(id=assessmentId)).scalar()
+
+    db.session.delete(assessment)
+    db.session.commit()
+
+    flash("Successfully deleted %s %s" % (assessment.module, assessment.title))
+
+    return redirect("/")
