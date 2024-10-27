@@ -13,11 +13,11 @@
     </button>
     {% else %}
     <button type="button" class="btn btn-outline-primary btn-block">
-      Mark complete
+      Mark as complete
     </button>
     {% endif %}
     <div class="btn-group btn-block mt-2" role="group">
-      <a type="button" class="btn btn-outline-warning" href="/edit">Edit</a>
+      <a type="button" class="btn btn-outline-warning" href="/edit/{{ cardData.id }}">Edit</a>
 
       <button type="button" class="btn btn-outline-danger">Delete</button>
     </div>

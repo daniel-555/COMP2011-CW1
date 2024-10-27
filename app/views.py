@@ -1,6 +1,9 @@
-from flask import render_template
-from app import app, db, models
+from flask import flash, render_template, redirect
+from app import app, db
+from app.models import Assessment
 from .forms import AssessmentForm
+
+import datetime
 
 # Assessments are fetched from database
     # Then processed and passed to template
@@ -8,7 +11,7 @@ from .forms import AssessmentForm
     
 assessments = [
     { 
-        "id": 1,
+        "id": 0,
         "title":"Coursework 1", 
         "module":"COMP2011", 
         "description":"web app dev coursework 1", 
@@ -16,7 +19,7 @@ assessments = [
         "dueTime":"15:00", 
         "completed": False
     }, {
-        "id": 2,
+        "id": 1,
         "title":"Coursework 2", 
         "module":"COMP1921", 
         "description":"module from last year's coursework", 
@@ -24,7 +27,7 @@ assessments = [
         "dueTime":"14:00", 
         "completed": True
     }, {
-        "id": 3,
+        "id": 2,
         "title":"Formative Coursework 1", 
         "module":"COMP2421", 
         "description":"Made up coursework", 
@@ -32,7 +35,7 @@ assessments = [
         "dueTime":"16:00", 
         "completed": False
     }, {
-        "id": 4,
+        "id": 3,
         "title":"Formative Coursework 1", 
         "module":"COMP2421", 
         "description":"Made up coursework", 
@@ -43,27 +46,69 @@ assessments = [
 ]
 
 
+def formatAssessment(assessment):
+    return {
+            "id": assessment.id,
+            "title": assessment.title,
+            "module": assessment.module,
+            "description": assessment.description,
+            "dueDate": assessment.deadline.strftime("%D/%m/%Y"),
+            "dueTime": assessment.deadline.strftime("%H/%M"),
+            "completed": assessment.completed
+
+        }
+
+def getAllAssessments():
+    data = Assessment.query.all()
+    
+    # format data into the usable format
+    formattedAssessments = []
+    for assessment in data:
+        formattedAssessments.append(formatAssessment(assessment))
+
+    return formattedAssessments
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    
+    assessments = getAllAssessments()
     
     return render_template("home.html", title="Home", assessments=assessments)
 
 @app.route('/create', methods=['GET', 'POST'])
 def createAssessment():
     form = AssessmentForm()
+
+    if form.validate_on_submit():
+        flash("success")
+
     return render_template("assessmentForm.html", 
                            title="Create Assessment", 
                            action="create", # can be (create, edit)
                            form=form
                            )
 
+
 @app.route('/edit', methods=['GET', 'POST'])
-def editAssessment():
+@app.route('/edit/<int:assessmentId>', methods=['GET', 'POST'])
+def editAssessment(assessmentId=None):
+    # if the user tries to go to the edit route without passing an id
+    #   they are redirected back to the home page
+    if assessmentId == None: 
+        return redirect("/")
+
+
     form = AssessmentForm()
     return render_template("assessmentForm.html", 
-                           title="Create Assessment", 
+                           title="Edit Assessment", 
                            action="edit", # can be (create, edit)
-                           id='COMP2011 Coursework 1',
+                           assessment=assessments[assessmentId],
                            form=form
                            )
+
+@app.route("/mark-as-complete", methods=['GET', 'POST'])
+@app.route("/mark-as-complete/<int:assessmentId>", methods=['GET', 'POST'])
+def markAsComplete(assessmentId=None):
+    if assessmentId == None:
+        return redirect("/")
+    

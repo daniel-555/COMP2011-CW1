@@ -6,8 +6,8 @@ import datetime
 
 class AssessmentForm(FlaskForm):
     title = StringField("Assessment Title", validators=[DataRequired()])
-    moduleCode = SelectField("Module Code", validators=[DataRequired()])
+    module = StringField("Module Code", validators=[DataRequired()])
     description = TextAreaField("Description")
     dueDate = DateField("Date due", validators=[DataRequired()])
-    dueTime = TimeField("Time due", validators=[DataRequired()])
+    dueTime = TimeField("Time due", default=datetime.time(0, 0))
     completed = BooleanField("Completed", default=False)

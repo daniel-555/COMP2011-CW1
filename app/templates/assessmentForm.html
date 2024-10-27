@@ -6,17 +6,26 @@
 		<div class="col-12 col-md-3 col-xl-4"></div>
 		<div class="col-12 col-md-6 col-xl-4">
 			{% if action=="create" %}
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					{% for message in messages %}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
 			<h2>Create a new Assessment</h2>
 			{% else %}
-			<h2>Edit {{ id }}</h2>
+			<h2>Edit {{ assessment.module }} {{ assessment.title }}</h2>
 			{% endif %}
 			<form action="" method="post" name="assessmentForm">
 				{{ form.hidden_tag() }} {{ form.title.label}} {{ required() }} {{
 				form.title(class_='form-control') }}
 				<br />
 
-				{{ form.moduleCode.label }} {{ required() }} {{
-				form.moduleCode(class_='form-control')}}
+				{{ form.module.label }} {{ required() }} {{
+				form.module(class_='form-control')}}
 				<br />
 
 				{{ form.description.label}} {{ form.description(class_='form-control')}}
@@ -35,8 +44,9 @@
 
 				{{ form.completed.label }} {{form.completed}}
 				<br /><br />
-				
-				<input type="submit" value="Submit" class="btn btn-primary btn-block" />
+
+
+				<input type="submit" value="{% if action=="create" %}Create{% else %}Update{% endif %}" class="btn btn-primary btn-block" />
 			</form>
 		</div>
 	</div>
