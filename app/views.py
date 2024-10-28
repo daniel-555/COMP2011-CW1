@@ -41,6 +41,8 @@ def formatAssessment(assessment):
             "completed": assessment.completed
         }
 
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Get all assessments from database ordered by not completed first
@@ -94,6 +96,7 @@ def createAssessment():
 
     if form.validate_on_submit():
 
+        # add the new assessment to the database
         title = form.title.data
         module = form.module.data
         description = form.description.data
@@ -126,6 +129,9 @@ def editAssessment(assessmentId=None):
     assessment = db.session.execute(db.select(Assessment).filter_by(id=assessmentId)).scalar()
 
     # Create and populate form with fetched data
+    # formatAssessment() function cannot be used here as dueDate and dueTime are 
+    #   required as datetime.date and datetime.time objects respectively rather than 
+    #   the printed string format
     assessment_data = {
         "title": assessment.title,
         "module": assessment.module,

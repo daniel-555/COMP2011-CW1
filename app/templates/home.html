@@ -1,17 +1,19 @@
-{% extends "base.html" %} {% from "card.html" import newCard %} {% block content
-%}
-<div class="container-fluid">
+{% extends "base.html" %}
+{% from "card.html" import newCard %}
 
+{% block content %}
+<div class="container-fluid">
 	{% with messages = get_flashed_messages() %}
-		{% if messages %}
-			{% for message in messages %}
-			<div class="alert alert-success">
-				{{ message }}
-			</div>
-			{% endfor %}
-		{% endif %}
+	{% if messages %}
+	{% for message in messages %}
+	<div class="alert alert-success">
+		{{ message }}
+	</div>
+	{% endfor %}
+	{% endif %}
 	{% endwith %}
-	
+
+	<!-- Render the provdided assessment data into cards -->
 	<div class="row">
 		{% for assessment in assessments %}
 		<div class="col col-12 col-sm-6 col-lg-4 col-xl-3 mb-4">
