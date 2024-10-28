@@ -6,4 +6,4 @@ class Assessment(db.Model):
     module = db.Column(db.String(10), nullable=False)
     deadline = db.Column(db.DateTime)
     description = db.Column(db.String(500))
-    completed = db.Column(db.Boolean)
+    completed = db.Column(db.Boolean, default=False)

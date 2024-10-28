@@ -10,4 +10,3 @@ class AssessmentForm(FlaskForm):
     description = TextAreaField("Description")
     dueDate = DateField("Date due", validators=[DataRequired()])
     dueTime = TimeField("Time due", default=datetime.time(0, 0))
-    completed = BooleanField("Completed", default=False)

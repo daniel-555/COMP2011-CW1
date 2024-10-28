@@ -36,7 +36,7 @@ def formatAssessment(assessment):
             "title": assessment.title,
             "module": assessment.module,
             "description": assessment.description,
-            "dueDate": assessment.deadline.strftime("%D/%m/%Y"),
+            "dueDate": assessment.deadline.strftime("%d/%m/%Y"),
             "dueTime": assessment.deadline.strftime("%H:%M"),
             "completed": assessment.completed
         }
@@ -98,12 +98,10 @@ def createAssessment():
         module = form.module.data
         description = form.description.data
         deadline = datetime.datetime.combine(form.dueDate.data, form.dueTime.data)
-        completed = form.completed.data
 
         flash("Successfully created %s %s" % (module, title))
 
-
-        newAssessment = Assessment(title=title, module=module, description=description, deadline=deadline, completed=completed)
+        newAssessment = Assessment(title=title, module=module, description=description, deadline=deadline)
         db.session.add(newAssessment)
         db.session.commit()
 
@@ -125,11 +123,35 @@ def editAssessment(assessmentId=None):
     if assessmentId == None: 
         return redirect("/")
 
+    assessment = db.session.execute(db.select(Assessment).filter_by(id=assessmentId)).scalar()
 
-    form = AssessmentForm()
+    # Create and populate form with fetched data
+    assessment_data = {
+        "title": assessment.title,
+        "module": assessment.module,
+        "description": assessment.description,
+        "dueDate": assessment.deadline.date(),
+        "dueTime": assessment.deadline.time()
+    }
+    form = AssessmentForm(data=assessment_data)
+
+    if form.validate_on_submit():
+        
+        assessment.title = form.title.data
+        assessment.module = form.module.data
+        assessment.description = form.description.data
+        assessment.deadline = datetime.datetime.combine(form.dueDate.data, form.dueTime.data)
+
+        flash("Successfully updated %s %s" % (form.module.data, form.title.data))
+
+        db.session.commit()
+
+        return redirect("/")
+
     return render_template("assessmentForm.html", 
                            title="Edit Assessment", 
                            action="edit", # can be (create, edit)
+                           assessment=formatAssessment(assessment),
                            form=form
                            )
 
