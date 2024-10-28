@@ -9,4 +9,4 @@ class AssessmentForm(FlaskForm):
     module = StringField("Module Code", validators=[DataRequired()])
     description = TextAreaField("Description")
     dueDate = DateField("Date due", validators=[DataRequired()])
-    dueTime = TimeField("Time due", default=datetime.time(0, 0))
+    dueTime = TimeField("Time due", default=datetime.time(0))
